@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long parentt[100002];
+long long sizee[100002];
+long long M;
+long long findd(long long x)
+{
+    while(x!=parentt[x])
+    {
+        parentt[x]=parentt[parentt[x]];
+        x=parentt[x];
+    }
+    return x;
+}
+void unionn(long long x,long long y)
+{
+    if(sizee[x]>sizee[y])
+    {
+        parentt[y]=parentt[x];
+        sizee[x]+=sizee[y];
+    }
+    else
+    {
+        parentt[x]=parentt[y];
+        sizee[y]+=sizee[x];
+    }
+}
+int main()
+{
+    long long N,Q,a,b,curr_ans=0,i=0;
+    cin>>N>>M;
+    for(i=0;i<=N;i++)
+    {
+        parentt[i]=i;
+        sizee[i]=1;
+    }
+    char ch;
+    cin>>Q;
+    while(Q--)
+    {   cin>>ch;
+        if(ch=='A' || ch=='E')
+        cin>>a>>b;
+        if(ch=='S')
+        cin>>a;
+        if(ch=='S')
+        {
+            long long p=findd(a);
+            cout<<sizee[p]<<"\n";
+            continue;
+        }
+        long long p_1=findd(a);
+        long long p_2=findd(b);
+        if(ch=='E')
+        {
+            if(p_1==p_2)
+                cout<<"Yes"<<"\n";
+            else
+                cout<<"No"<<"\n";
+            continue;
+        }
+        if(p_1==p_2)
+        {
+
+        }
+        else
+        {   if(sizee[p_1]+sizee[p_2]<=M)
+            unionn(p_1,p_2);
+       }
+}
+}
