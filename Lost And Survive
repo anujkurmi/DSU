@@ -1,0 +1,73 @@
+//#awesome use of DSU and Multisets
+
+#include<bits/stdc++.h>
+using namespace std;
+long long parentt[100002];
+long long sizee[100002];
+multiset<int> mul;
+long long findd(long long x)
+{
+    while(x!=parentt[x])
+    {
+        parentt[x]=parentt[parentt[x]];
+        x=parentt[x];
+    }
+    return x;
+}
+void unionn(long long x,long long y)
+{
+    if(sizee[x]>sizee[y])
+    {
+        parentt[y]=parentt[x];
+        mul.erase(mul.find(sizee[x]));
+        mul.erase(mul.find(sizee[y]));
+        sizee[x]+=sizee[y];
+        mul.insert(sizee[x]);
+    }
+    else
+    {
+        parentt[x]=parentt[y];
+              mul.erase(mul.find(sizee[x]));
+        mul.erase(mul.find(sizee[y]));
+        sizee[y]+=sizee[x];
+       mul.insert(sizee[y]);
+    }
+}
+int main()
+{
+    long long N,Q,a,b,curr_ans=0,i=0;
+    cin>>N>>Q;
+    for(i=1;i<=N;i++)
+        mul.insert(1);
+    for(i=0;i<=N;i++)
+    {
+        parentt[i]=i;
+        sizee[i]=1;
+    }
+    while(Q--)
+    {
+        cin>>a>>b;
+        long long p_1=findd(a);
+        long long p_2=findd(b);
+        if(p_1==p_2)
+        {
+
+        }
+        else
+        {
+            unionn(p_1,p_2);
+            long long maxx=*mul.rbegin();
+            long long minn=*mul.begin();
+            if(maxx!=N)
+            {
+                curr_ans=maxx-minn;
+            }
+            else
+            {
+                curr_ans=0;
+            }
+        }
+        cout<<curr_ans<<"\n";
+
+    }
+}
