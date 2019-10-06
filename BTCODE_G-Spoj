@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+#include<vector>
+using namespace std;
+int parentt[100002];
+int color[100002];
+int r[100003];
+vector<int> v[100003];
+int parenttt(int x)
+{
+   if(parentt[x] == x) {
+        return x;
+    }
+    parentt[x] = parenttt(parentt[x]);
+    return parentt[x];
+}
+void unionn(int x,int y)
+{
+    int px=parenttt(x);
+    int py=parenttt(y);
+    if(px==py)
+    return;
+    if(r[px]>r[py])
+    {
+        swap(px,py);
+    }
+    parentt[px]=py;
+    if(r[px]==r[py])
+    {
+        r[py]+=1;
+    }
+    return;
+}
+int main()
+{    ios_base::sync_with_stdio(false);
+cin.tie(NULL);
+cout.tie(NULL);
+    int N;
+    cin>>N;
+    for(int i=0;i<N;i++)
+    {
+        parentt[i]=i;
+        r[i]=0;
+        color[i]=0;
+    }
+    int a,b;
+    for(int i=1;i<N;i++)
+    {
+        cin>>a>>b;
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+    int Q,x,y,z;
+    cin>>Q;
+    while(Q--)
+    {cin>>x>>y>>z;
+    if(x==1)
+    {
+        color[y]=z;
+        for(int i=0;i<v[y].size();i++)
+        {
+            if(color[v[y][i]]==color[y])
+            { 
+                unionn(v[y][i],y);
+            }
+        }
+    }
+    else
+    {
+        if(parenttt(y)==parenttt(z))
+        cout<<"YES\n";
+        else
+        cout<<"NO\n";
+    }
+    
+     
+    }
+ 
+    return 0;
+}
